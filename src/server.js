@@ -6,7 +6,7 @@ import helmet from "helmet";
 import logger from "./utils/logger.js";
 import morgan from "morgan";
 import accessLogStream from "./utils/morgan.js";
-import authRoute from  "./routes/user.route.js"
+import authRoute from "./routes/user.route.js"
 import adminRoute from "./routes/admin.route.js"
 import teacherRoute from "./routes/teacher.route.js"
 import courseRoute from "./routes/course.route.js"
@@ -30,6 +30,7 @@ import { verifyAllRedisConnections } from "./config/redis.js";
 
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = _config.PORT;
 
 
@@ -37,12 +38,12 @@ const PORT = _config.PORT;
 
 
 // CORS configuration
-app.use(cors({ 
+app.use(cors({
   origin: [
-    _config.FRONTEND_URL , "https://edunova-frontend-eight.vercel.app" , "https://academy.inampus.in"
+    _config.FRONTEND_URL, "https://edunova-frontend-eight.vercel.app", "https://academy.inampus.in"
   ],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS' , 'PATCH'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
@@ -74,11 +75,11 @@ app.get("/health", (req, res) => {
 });
 
 //routes
-app.use("/api/v1/auth",authRoute)
-app.use("/api/v1/admin",adminRoute)
-app.use("/api/v1/teacher",teacherRoute)
-app.use("/api/v1/courses",courseRoute)
-app.use("/api/v1/ai",aiRoute)
+app.use("/api/v1/auth", authRoute)
+app.use("/api/v1/admin", adminRoute)
+app.use("/api/v1/teacher", teacherRoute)
+app.use("/api/v1/courses", courseRoute)
+app.use("/api/v1/ai", aiRoute)
 app.use("/api/v1/imagekit", imagekitRoute)
 app.use("/api/v1/discussions", discussionRoute)
 app.use("/api/v1/reviews", reviewRoute)
@@ -105,7 +106,7 @@ initializeSocketHandlers();
 httpServer.listen(PORT, async () => {
   logger.info(`Server running on port ${PORT}`);
   logger.info(`Database URI: ${_config.DATABASE_URI}`);
-  
+
   // Verify all Redis connections
   try {
     const redisStatus = await verifyAllRedisConnections();
@@ -117,7 +118,7 @@ httpServer.listen(PORT, async () => {
   } catch (error) {
     logger.warn('⚠️ Redis connection verification failed, but server will continue:', error.message);
   }
-  
+
   // Start notification pub/sub subscriber (for scalable SSE across instances)
   try {
     await startNotificationSubscriber();
@@ -126,7 +127,7 @@ httpServer.listen(PORT, async () => {
     logger.error("❌ Failed to start notification subscriber:", error);
     // Continue server startup even if subscriber fails - it will retry
   }
-  
+
   // Start announcement pub/sub subscriber (for scalable SSE across instances)
   try {
     await startAnnouncementSubscriber();
@@ -135,13 +136,13 @@ httpServer.listen(PORT, async () => {
     logger.error("❌ Failed to start announcement subscriber:", error);
     // Continue server startup even if subscriber fails - it will retry
   }
-  
+
   // Start notification expiration cron job
   startNotificationExpirationCron();
-  
+
   // Start Redis cleanup service for online users
   startCleanupService();
-  
+
   logger.info("✅ All background services started");
 });
 

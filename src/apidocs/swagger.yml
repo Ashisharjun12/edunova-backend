@@ -29,14 +29,14 @@ components:
     User:
       type: object
       properties:
-        id: { type: string }
+        id: { type: string, format: uuid }
         name: { type: string }
         email: { type: string }
         role: { type: string, enum: [student, teacher, admin] }
         avatar: { type: string }
         bio: { type: string }
         collegeName: { type: string }
-        collegeId: { type: string }
+        collegeId: { type: string, format: uuid }
         socialLinks:
           type: object
           properties:
@@ -48,15 +48,189 @@ components:
     Course:
       type: object
       properties:
-        id: { type: string }
+        id: { type: string, format: uuid }
+        teacherId: { type: string, format: uuid }
+        subjectId: { type: string, format: uuid }
+        semesterId: { type: string, format: uuid }
+        branchId: { type: string, format: uuid }
         title: { type: string }
         description: { type: string }
         shortDescription: { type: string }
-        price: { type: number }
-        status: { type: string, enum: [draft, published] }
-        studentCount: { type: integer }
-        tags: { type: array, items: { type: string } }
         thumbnailUrl: { type: string }
+        status: { type: string, enum: [draft, published, unpublished] }
+        difficulty: { type: string, enum: [beginner, intermediate, advanced] }
+        price: { type: number, description: "Price in cents" }
+        duration: { type: number, description: "Total duration in seconds" }
+        studentCount: { type: integer }
+        rating: { type: number }
+        ratingCount: { type: integer }
+        tags: { type: array, items: { type: string } }
+        requirements: { type: array, items: { type: string } }
+        learningOutcomes: { type: array, items: { type: string } }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    Section:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        courseId: { type: string, format: uuid }
+        title: { type: string }
+        description: { type: string }
+        position: { type: integer }
+
+    Lesson:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        courseId: { type: string, format: uuid }
+        sectionId: { type: string, format: uuid }
+        title: { type: string }
+        description: { type: string }
+        lessonType: { type: string, enum: [youtube_video, youtube_embed] }
+        position: { type: integer }
+        youtubeVideoId: { type: string }
+        youtubeUrl: { type: string }
+        youtubeThumbnail: { type: string }
+        duration: { type: integer }
+
+    College:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        location: { type: string }
+        logoUrl: { type: string }
+
+    Branch:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        code: { type: string }
+        description: { type: string }
+
+    Semester:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        branchId: { type: string, format: uuid }
+        name: { type: string }
+        semesterNumber: { type: integer }
+
+    Subject:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        semesterId: { type: string, format: uuid }
+        name: { type: string }
+        code: { type: string }
+        description: { type: string }
+
+    Discussion:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        userId: { type: string, format: uuid }
+        courseId: { type: string, format: uuid }
+        lessonId: { type: string, format: uuid }
+        content: { type: string }
+        likesCount: { type: integer }
+        repliesCount: { type: integer }
+        isEdited: { type: boolean }
+        createdAt: { type: string, format: date-time }
+
+    Review:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        userId: { type: string, format: uuid }
+        courseId: { type: string, format: uuid }
+        rating: { type: integer, minimum: 1, maximum: 5 }
+        comment: { type: string }
+        likesCount: { type: integer }
+        isVerified: { type: boolean }
+        createdAt: { type: string, format: date-time }
+
+    Assignment:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        courseId: { type: string, format: uuid }
+        lessonId: { type: string, format: uuid }
+        title: { type: string }
+        description: { type: string }
+        type: { type: string, enum: [quiz, pdf_upload] }
+        points: { type: integer }
+        dueDate: { type: string, format: date-time }
+
+    Notification:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        userId: { type: string, format: uuid }
+        type: { type: string }
+        title: { type: string }
+        content: { type: string }
+        isRead: { type: boolean }
+        createdAt: { type: string, format: date-time }
+
+    Resume:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        userId: { type: string, format: uuid }
+        fileName: { type: string }
+        fileUrl: { type: string }
+        processingStatus:
+          { type: string, enum: [pending, processing, completed, failed] }
+        summary: { type: string }
+
+    Interview:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        userId: { type: string, format: uuid }
+        jobId: { type: string, format: uuid }
+        interviewType: { type: string }
+        difficultyLevel: { type: string, enum: [easy, medium, hard] }
+        status:
+          { type: string, enum: [pending, in_progress, completed, cancelled] }
+        feedbackReport: { type: object }
+
+    Meeting:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        courseId: { type: string, format: uuid }
+        createdBy: { type: string, format: uuid }
+        title: { type: string }
+        description: { type: string }
+        meetingType: { type: string, enum: [course, club, general] }
+        status: { type: string, enum: [scheduled, live, ended, cancelled] }
+        roomName: { type: string }
+        startTime: { type: string, format: date-time }
+        endTime: { type: string, format: date-time }
+
+    AssignmentSubmission:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        assignmentId: { type: string, format: uuid }
+        userId: { type: string, format: uuid }
+        attemptNumber: { type: integer }
+        status: { type: string, enum: [submitted, graded, returned] }
+        score: { type: integer }
+        feedback: { type: string }
+        submittedAt: { type: string, format: date-time }
+
+    LessonChat:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        userId: { type: string, format: uuid }
+        lessonId: { type: string, format: uuid }
+        title: { type: string }
         createdAt: { type: string, format: date-time }
 
     ApiResponse:

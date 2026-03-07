@@ -1,0 +1,441 @@
+openapi: 3.0.0
+info:
+  title: Edunova API Documentation
+  description: |
+    Comprehensive API documentation for the Edunova LMS platform.
+
+    ### 🔐 How to Authenticate
+    1. Perform **Google Login** via the `/auth/google` endpoint (or your frontend app).
+    2. After login, copy the `accessToken` from your browser's LocalStorage or the callback URL.
+    3. Click the **Authorize** button at the top of this page.
+    4. Paste the token into the value field and click **Authorize**.
+    5. You can now test protected endpoints!
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Local development server
+  - url: https://squid-app-qdk6l.ondigitalocean.app/api/v1
+    description: Production server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        email: { type: string }
+        role: { type: string, enum: [student, teacher, admin] }
+        avatar: { type: string }
+        bio: { type: string }
+        collegeName: { type: string }
+        collegeId: { type: string }
+        socialLinks:
+          type: object
+          properties:
+            linkedin: { type: string }
+            github: { type: string }
+            portfolio: { type: string }
+        createdAt: { type: string, format: date-time }
+
+    Course:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        description: { type: string }
+        shortDescription: { type: string }
+        price: { type: number }
+        status: { type: string, enum: [draft, published] }
+        studentCount: { type: integer }
+        tags: { type: array, items: { type: string } }
+        thumbnailUrl: { type: string }
+        createdAt: { type: string, format: date-time }
+
+    ApiResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        message: { type: string }
+
+security:
+  - bearerAuth: []
+
+paths:
+  # --- Authentication & User Module ---
+  /auth/google:
+    get:
+      tags: [Authentication]
+      summary: Initiate Google OAuth login
+      responses:
+        302: { description: Redirect to Google login page }
+
+  /auth/google/callback:
+    get:
+      tags: [Authentication]
+      summary: Google OAuth callback
+      responses:
+        302: { description: Redirect to frontend with tokens }
+
+  /auth/refresh:
+    post:
+      tags: [Authentication]
+      summary: Refresh access token
+      responses:
+        200:
+          description: Token refreshed
+          content:
+            application/json:
+              schema:
+                {
+                  type: object,
+                  properties:
+                    {
+                      success: { type: boolean },
+                      accessToken: { type: string },
+                      user: { $ref: "#/components/schemas/User" },
+                    },
+                }
+
+  /auth/logout:
+    post:
+      tags: [Authentication]
+      summary: Logout user and clear cookies
+      responses:
+        200: { description: Logged out successfully }
+
+  /auth/check:
+    get:
+      tags: [Authentication]
+      summary: Check authentication status
+      responses:
+        200:
+          description: User is authenticated
+          content:
+            application/json:
+              schema:
+                {
+                  type: object,
+                  properties:
+                    {
+                      success: { type: boolean },
+                      user: { $ref: "#/components/schemas/User" },
+                    },
+                }
+
+  /auth/me:
+    get:
+      tags: [Authentication]
+      summary: Get current user profile
+      responses:
+        200:
+          description: User profile details
+          content:
+            application/json:
+              schema:
+                {
+                  type: object,
+                  properties:
+                    {
+                      success: { type: boolean },
+                      user: { $ref: "#/components/schemas/User" },
+                    },
+                }
+
+  /auth/profile:
+    put:
+      tags: [User]
+      summary: Update user profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                bio: { type: string }
+                collegeName: { type: string }
+                collegeId: { type: string }
+      responses:
+        200: { description: Profile updated }
+
+  /auth/colleges:
+    get:
+      tags: [Public]
+      summary: Get all colleges for selection
+      responses:
+        200: { description: List of colleges }
+
+  # --- Admin Module ---
+  /admin/users:
+    get:
+      tags: [Admin - User Management]
+      summary: Get all users
+      responses:
+        200: { description: List of all users }
+
+  /admin/users/{id}:
+    get:
+      tags: [Admin - User Management]
+      summary: Get user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        200: { description: User details }
+    delete:
+      tags: [Admin - User Management]
+      summary: Delete user
+      responses:
+        200: { description: User deleted }
+
+  /admin/changeRole/{role}:
+    put:
+      tags: [Admin - User Management]
+      summary: Change user role
+      parameters:
+        - name: role
+          in: path
+          required: true
+          schema: { type: string, enum: [student, teacher, admin] }
+      responses:
+        200: { description: Role updated }
+
+  /admin/analytics/overview:
+    get:
+      tags: [Admin - Analytics]
+      summary: Get platform overview analytics
+      responses:
+        200: { description: Analytics data }
+
+  /admin/colleges:
+    get:
+      tags: [Admin - College Management]
+      summary: Get all colleges
+      responses:
+        200: { description: List of colleges }
+    post:
+      tags: [Admin - College Management]
+      summary: Create a new college
+      responses:
+        201: { description: College created }
+
+  /admin/jobs:
+    get:
+      tags: [Admin - Job Management]
+      summary: Get all jobs
+      responses:
+        200: { description: List of jobs }
+    post:
+      tags: [Admin - Job Management]
+      summary: Create a new job
+      responses:
+        201: { description: Job created }
+
+  /admin/jobs/{id}:
+    get:
+      tags: [Admin - Job Management]
+      summary: Get job by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        200: { description: Job details }
+    put:
+      tags: [Admin - Job Management]
+      summary: Update job
+      responses:
+        200: { description: Job updated }
+    delete:
+      tags: [Admin - Job Management]
+      summary: Delete job
+      responses:
+        200: { description: Job deleted }
+
+  # --- Teacher Module ---
+  /teacher/stats:
+    get:
+      tags: [Teacher - Dashboard]
+      summary: Get teacher statistics
+      responses:
+        200: { description: Statistics data }
+
+  /teacher/courses:
+    get:
+      tags: [Teacher - Course Management]
+      summary: Get courses created by teacher
+      responses:
+        200: { description: List of courses }
+    post:
+      tags: [Teacher - Course Management]
+      summary: Create a new course
+      responses:
+        201: { description: Course created }
+
+  /teacher/courses/{courseId}:
+    patch:
+      tags: [Teacher - Course Management]
+      summary: Update course details
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        200: { description: Course updated }
+    delete:
+      tags: [Teacher - Course Management]
+      summary: Delete course
+      responses:
+        200: { description: Course deleted }
+
+  /teacher/youtube/connect:
+    get:
+      tags: [Teacher - YouTube Integration]
+      summary: Initiate YouTube connection
+      responses:
+        302: { description: Redirect to Google OAuth }
+
+  # --- Courses Module ---
+  /courses/all:
+    get:
+      tags: [Courses - Browsing]
+      summary: Get all published courses
+      responses:
+        200: { description: List of courses }
+
+  /courses/{courseId}:
+    get:
+      tags: [Courses - Browsing]
+      summary: Get single course details
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        200: { description: Course details }
+
+  # --- Community (Discussions & Reviews) ---
+  /discussions/all:
+    get:
+      tags: [Community - Discussions]
+      summary: Get all discussions
+      responses:
+        200: { description: List of discussions }
+
+  /reviews/course/{courseId}:
+    get:
+      tags: [Community - Reviews]
+      summary: Get reviews for a course
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        200: { description: List of reviews }
+    post:
+      tags: [Community - Reviews]
+      summary: Add a review to a course
+      responses:
+        201: { description: Review added }
+
+  # --- AI Assistance Module ---
+  /ai/transcript/{lessonId}:
+    get:
+      tags: [AI - Assistance]
+      summary: Get transcript for a lesson
+      parameters:
+        - name: lessonId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        200: { description: Transcript text }
+
+  /ai/chat/{lessonId}:
+    post:
+      tags: [AI - Assistance]
+      summary: Chat with AI about a lesson
+      parameters:
+        - name: lessonId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        200: { description: AI response }
+
+  /ai/generate-course:
+    post:
+      tags: [AI - Generation]
+      summary: Generate a full course outline with AI
+      responses:
+        200: { description: Generated course data }
+
+  # --- Interview System ---
+  /interview/resume/upload:
+    post:
+      tags: [Interview - Resume]
+      summary: Upload resume for processing
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file: { type: string, format: binary }
+      responses:
+        200: { description: Upload success }
+
+  /interview/create:
+    post:
+      tags: [Interview - Session]
+      summary: Start a new AI interview session
+      responses:
+        201: { description: Interview session created }
+
+  /interview/{interviewId}/feedback:
+    get:
+      tags: [Interview - Session]
+      summary: Get full feedback report for an interview
+      parameters:
+        - name: interviewId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        200: { description: Feedback report }
+
+  # --- Chat & Notifications ---
+  /chat/conversations:
+    get:
+      tags: [Communication - Chat]
+      summary: Get user's active conversations
+      responses:
+        200: { description: List of conversations }
+
+  /notifications:
+    get:
+      tags: [Communication - Notifications]
+      summary: Get all user notifications
+      responses:
+        200: { description: List of notifications }
+
+  /notifications/unread-count:
+    get:
+      tags: [Communication - Notifications]
+      summary: Get unread notification count
+      responses:
+        200: { description: Count value }

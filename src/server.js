@@ -27,7 +27,12 @@ import { initializeSocketHandlers } from "./socket/socketHandlers.js";
 import { startCleanupService } from "./services/redis/cleanup.service.js";
 import { createServer } from "http";
 import { verifyAllRedisConnections } from "./config/redis.js";
+import swaggerUi from "swagger-ui-express";
+import YAML from "yamljs";
+import path from "path";
 
+// Load Swagger document
+const swaggerDocument = YAML.load(path.resolve("./src/apidocs/swagger.yml"));
 
 const app = express();
 app.set('trust proxy', 1);
@@ -40,7 +45,7 @@ const PORT = _config.PORT;
 // CORS configuration
 app.use(cors({
   origin: [
-   "https://edunova-frontend-eight.vercel.app"
+    "https://edunova-frontend-eight.vercel.app"
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
@@ -70,9 +75,13 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Health check
 app.get("/health", (req, res) => {
   res.status(200).send("OK");
 });
+
+// Swagger route
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //routes
 app.use("/api/v1/auth", authRoute)

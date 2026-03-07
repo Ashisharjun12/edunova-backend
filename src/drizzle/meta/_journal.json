@@ -1,0 +1,209 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1759743659329,
+      "tag": "0000_fresh_mojo",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1759750451833,
+      "tag": "0001_right_goblin_queen",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1759766113998,
+      "tag": "0002_stormy_elektra",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1759814648406,
+      "tag": "0003_wealthy_hercules",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1759947378974,
+      "tag": "0004_chief_centennial",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1759964354996,
+      "tag": "0005_orange_ares",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1767724442825,
+      "tag": "0006_normal_fenris",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1767727326397,
+      "tag": "0007_swift_katie_power",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1767728221222,
+      "tag": "0008_typical_thunderbolts",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1767733567873,
+      "tag": "0009_flippant_spot",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1767814836078,
+      "tag": "0010_tricky_tyger_tiger",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1767829986520,
+      "tag": "0011_freezing_imperial_guard",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1767830056442,
+      "tag": "0012_conscious_omega_sentinel",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1767949384487,
+      "tag": "0013_red_tyrannus",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1767953384095,
+      "tag": "0014_tranquil_loki",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1767962671331,
+      "tag": "0015_lazy_moira_mactaggert",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1767966728161,
+      "tag": "0016_needy_speed",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1767971203110,
+      "tag": "0017_lowly_miss_america",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1767983259946,
+      "tag": "0018_melodic_rocket_raccoon",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1768119500864,
+      "tag": "0019_nebulous_tigra",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1768120542540,
+      "tag": "0020_slippery_mantis",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1768154753814,
+      "tag": "0021_optimal_charles_xavier",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1768171257604,
+      "tag": "0022_worried_redwing",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1768173505997,
+      "tag": "0023_handy_giant_girl",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1768174617299,
+      "tag": "0024_optimal_gateway",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1768213513591,
+      "tag": "0025_chubby_glorian",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1768235471863,
+      "tag": "0026_strange_pixie",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1768236457748,
+      "tag": "0027_secret_blonde_phantom",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1768414141471,
+      "tag": "0028_talented_lester",
+      "breakpoints": true
+    }
+  ]
+}

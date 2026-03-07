@@ -1,0 +1,1 @@
+ALTER TABLE "interview_types" ADD COLUMN "main_type" text NOT NULL;

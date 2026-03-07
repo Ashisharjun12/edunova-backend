@@ -1,0 +1,1 @@
+ALTER TABLE "course_events" ALTER COLUMN "course_id" DROP NOT NULL;

@@ -39,7 +39,7 @@ const PORT = _config.PORT;
 // CORS configuration
 app.use(cors({ 
   origin: [
-    _config.FRONTEND_URL , "https://academy-blue-one.vercel.app" , "https://academy.inampus.in"
+    _config.FRONTEND_URL , "https://edunova-frontend-eight.vercel.app" , "https://academy.inampus.in"
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS' , 'PATCH'],

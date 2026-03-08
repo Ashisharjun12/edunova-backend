@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 
 dotenv.config();
+//configurations
 
 const { PORT, DATABASE_URI ,
   IMAGEKIT_PUBLIC_KEY,

@@ -45,7 +45,7 @@ const PORT = _config.PORT;
 // CORS configuration
 app.use(cors({
   origin: [
-    "https://edunova-frontend-eight.vercel.app","https://www.edunova.dev","https://edunova.dev"
+   "http://localhost:5173", "https://edunova-frontend-eight.vercel.app","https://www.edunova.dev","https://edunova.dev"
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
